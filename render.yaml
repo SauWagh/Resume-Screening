@@ -1,9 +1,20 @@
 services:
   - type: web
-    name: resume_screening
+    name: resume-screening
     runtime: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn main:app -k uvicorn.workers.UvicornWorker
+
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py collectstatic --noinput
+
+    startCommand: gunicorn resume_screening.wsgi:application
+
     envVars:
-      - key: GOOGLE_API_KEY
-        sync: false
+      - key: DJANGO_SETTINGS_MODULE
+        value: resume_screening.settings
+
+      - key: SECRET_KEY
+        generateValue: true
+
+      - key: DEBUG
+        value: "False"
