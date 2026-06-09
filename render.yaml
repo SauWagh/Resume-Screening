@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: resume_screening
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn main:app -k uvicorn.workers.UvicornWorker
+    envVars:
+      - key: GOOGLE_API_KEY
+        sync: false
